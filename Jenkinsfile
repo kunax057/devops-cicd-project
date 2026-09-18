@@ -16,6 +16,24 @@ pipeline {
             }
         }
 
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv('SonarQube') {
+                    withCredentials([string(
+                        credentialsId: 'sonarqube-token',
+                        variable: 'SONAR_TOKEN'
+                    )]) {
+                        sh '''
+                            cd app
+                            mvn sonar:sonar \
+                              -Dsonar.projectKey=devops-demo \
+                              -Dsonar.token="$SONAR_TOKEN"
+                        '''
+                    }
+                }
+            }
+        }
+
         stage('Docker Build') {
             steps {
                 sh 'cd app && docker build -t devops-demo:1.0 .'
@@ -48,8 +66,11 @@ pipeline {
                 )]) {
                     sh '''
                         echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+
                         docker tag devops-demo:1.0 $DOCKER_USERNAME/devops-demo:1.0
+
                         docker push $DOCKER_USERNAME/devops-demo:1.0
+
                         docker logout
                     '''
                 }
