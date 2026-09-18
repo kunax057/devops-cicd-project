@@ -55,6 +55,16 @@ pipeline {
                 }
             }
         }
+
+        stage('Kubernetes Deploy') {
+            steps {
+                sh '''
+                    kubectl apply -f k8s/deployment.yaml
+                    kubectl apply -f k8s/service.yaml
+                    kubectl rollout status deployment/devops-demo --timeout=120s
+                '''
+            }
+        }
     }
 
     post {
@@ -63,11 +73,11 @@ pipeline {
         }
 
         success {
-            echo 'CI PIPELINE SUCCESSFUL'
+            echo 'CI/CD PIPELINE SUCCESSFUL'
         }
 
         failure {
-            echo 'CI PIPELINE FAILED'
+            echo 'CI/CD PIPELINE FAILED'
         }
     }
 }
