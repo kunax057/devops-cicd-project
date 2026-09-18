@@ -25,7 +25,7 @@ pipeline {
                     )]) {
                         sh '''
                             cd app
-                            mvn sonar:sonar \
+                            mvn org.sonarsource.scanner.maven:sonar-maven-plugin:5.8.0.7211:sonar \
                               -Dsonar.projectKey=devops-demo \
                               -Dsonar.token="$SONAR_TOKEN"
                         '''
