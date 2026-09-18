@@ -23,12 +23,19 @@ pipeline {
                         credentialsId: 'sonarqube-token',
                         variable: 'SONAR_TOKEN'
                     )]) {
-                        sh '''
-                            cd app
-                            mvn org.sonarsource.scanner.maven:sonar-maven-plugin:5.8.0.7211:sonar \
-                              -Dsonar.projectKey=devops-demo \
-                              -Dsonar.token="$SONAR_TOKEN"
-                        '''
+                        script {
+                            def scannerHome = tool 'SonarScanner'
+
+                            sh """
+                                cd app
+                                ${scannerHome}/bin/sonar-scanner \
+                                  -Dsonar.projectKey=devops-demo \
+                                  -Dsonar.projectName='DevOps Demo' \
+                                  -Dsonar.sources=src \
+                                  -Dsonar.java.binaries=target/classes \
+                                  -Dsonar.token=\$SONAR_TOKEN
+                            """
+                        }
                     }
                 }
             }
