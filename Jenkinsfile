@@ -29,6 +29,7 @@ pipeline {
                             sh """
                                 cd app
                                 ${scannerHome}/bin/sonar-scanner \
+                                  -Dsonar.host.url=http://localhost:9000 \
                                   -Dsonar.projectKey=devops-demo \
                                   -Dsonar.projectName='DevOps Demo' \
                                   -Dsonar.sources=src \
