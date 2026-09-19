@@ -58,7 +58,18 @@ pipeline {
                       -p 8082:8081 \
                       devops-demo:1.0
 
-                    sleep 15
+                    echo "Waiting for application to become ready..."
+
+                    for i in {1..30}; do
+                        if curl -sf http://localhost:8082/health > /dev/null; then
+                            echo "Application is healthy"
+                            curl -f http://localhost:8082/health
+                            break
+                        fi
+
+                        echo "Waiting... attempt $i/30"
+                        sleep 2
+                    done
 
                     curl -f http://localhost:8082/health
                 '''
