@@ -16,7 +16,7 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh 'cd app && mvn clean package'
+                sh 'cd app && mvn clean verify'
             }
         }
 
@@ -38,6 +38,7 @@ pipeline {
                                   -Dsonar.projectName='DevOps Demo' \
                                   -Dsonar.sources=src \
                                   -Dsonar.java.binaries=target/classes \
+                                  -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml \
                                   -Dsonar.token=\$SONAR_TOKEN
                             """
                         }
