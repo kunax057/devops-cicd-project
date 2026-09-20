@@ -8,29 +8,7 @@ The pipeline automates application build, code quality analysis, security scanni
 
 ## 🏗️ Architecture
 
-GitHub
-   ↓
-Jenkins
-   ↓
-Maven Build & Test
-   ↓
-JaCoCo Code Coverage
-   ↓
-SonarQube Code Analysis
-   ↓
-OWASP Dependency Check
-   ↓
-Docker Build
-   ↓
-Docker Test
-   ↓
-Docker Hub
-   ↓
-Kubernetes / Minikube
-   ↓
-Prometheus
-   ↓
-Grafana
+GitHub ↓ Jenkins ↓ Maven Build & Test ↓ JaCoCo Code Coverage ↓ SonarQube Code Analysis ↓ OWASP Dependency Check ↓ Docker Build ↓ Docker Test ↓ Docker Hub ↓ Kubernetes / Minikube ↓ Prometheus ↓ Grafana
 
 Ansible is used for configuration management and Nginx configuration.
 
@@ -58,24 +36,31 @@ Ansible is used for configuration management and Nginx configuration.
 ## 🔄 CI/CD Pipeline Stages
 
 ### 1. Checkout
+
 Jenkins checks out the latest source code from the GitHub repository.
 
 ### 2. Build
+
 Maven builds the Spring Boot application and executes the test cases.
 
 ### 3. SonarQube Analysis
+
 SonarQube analyzes the source code for code quality issues and imports JaCoCo coverage results.
 
 ### 4. OWASP Dependency Check
+
 OWASP Dependency-Check scans project dependencies for known security vulnerabilities.
 
 ### 5. Docker Build
+
 The Spring Boot application is packaged into a Docker image.
 
 ### 6. Docker Test
+
 The Docker container is started and the application health endpoint is tested.
 
 ### 7. Docker Push
+
 The validated Docker image is pushed to Docker Hub.
 
 Docker image:
@@ -83,11 +68,13 @@ Docker image:
 `kunal057/devops-demo:1.0`
 
 ### 8. Kubernetes Deployment
+
 The application is deployed to a local Minikube Kubernetes cluster.
 
 The deployment uses two application replicas for availability.
 
 ### 9. Ansible Configuration
+
 Ansible automates server configuration by installing and configuring Nginx and creating the application configuration.
 
 ## ☸️ Kubernetes Components
@@ -128,6 +115,42 @@ Monitoring includes:
 - System Uptime
 - Application availability
 
+## 📸 Project Evidence
+
+### Jenkins CI/CD Pipeline
+
+![Jenkins CI/CD Pipeline](screenshots/01-jenkins-pipeline-success.png)
+
+### Kubernetes Deployment
+
+![Kubernetes Deployment](screenshots/02-kubernetes-deployment.png)
+
+### Docker Hub Image
+
+![Docker Hub Image](screenshots/03-dockerhub-image.png)
+
+### Prometheus Monitoring
+
+![Prometheus Monitoring](screenshots/04-prometheus-monitoring.png)
+
+![Prometheus Monitoring - Additional](screenshots/04-prometheus%20monitoring.png)
+
+### Grafana Dashboard 1
+
+![Grafana Dashboard 1](screenshots/05-1grafana-dashboard.png)
+
+### Grafana Dashboard 2
+
+![Grafana Dashboard 2](screenshots/05-2grafana-dashboard.png)
+
+### Grafana Dashboard 3
+
+![Grafana Dashboard 3](screenshots/05-3grafana-dashboard.png)
+
+### Grafana Dashboard 4
+
+![Grafana Dashboard 4](screenshots/05-4grafana-dashboard.png)
+
 ## 🔐 Security & Quality
 
 The pipeline includes:
@@ -155,6 +178,16 @@ devops-cicd-project/
 ├── ansible/
 │   ├── inventory
 │   └── playbook.yml
+├── screenshots/
+│   ├── 01-jenkins-pipeline-success.png
+│   ├── 02-kubernetes-deployment.png
+│   ├── 03-dockerhub-image.png
+│   ├── 04-prometheus monitoring.png
+│   ├── 04-prometheus-monitoring.png
+│   ├── 05-1grafana-dashboard.png
+│   ├── 05-2grafana-dashboard.png
+│   ├── 05-3grafana-dashboard.png
+│   └── 05-4grafana-dashboard.png
 ├── Jenkinsfile
 ├── .gitignore
 └── README.md
