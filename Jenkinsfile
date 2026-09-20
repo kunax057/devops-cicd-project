@@ -42,6 +42,30 @@ pipeline {
             }
         }
 
+        stage('OWASP Dependency Check') {
+            steps {
+                withCredentials([string(
+                    credentialsId: 'nvd-api-key',
+                    variable: 'NVD_API_KEY'
+                )]) {
+                    sh '''
+                        rm -rf dependency-check-report
+
+                        /opt/dependency-check-13.0.0/bin/dependency-check.sh \
+                          --project "DevOps Demo" \
+                          --scan app \
+                          --format HTML \
+                          --out dependency-check-report \
+                          --data /var/lib/jenkins/.dependency-check-data \
+                          --nvdApiKey "$NVD_API_KEY" \
+                          --nvdValidForHours 24
+
+                        echo "OWASP Dependency-Check completed successfully"
+                    '''
+                }
+            }
+        }
+
         stage('Docker Build') {
             steps {
                 sh 'cd app && docker build -t devops-demo:1.0 .'
