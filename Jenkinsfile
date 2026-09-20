@@ -131,6 +131,16 @@ pipeline {
                 '''
             }
         }
+
+        stage('Ansible Configuration') {
+            steps {
+                sh '''
+                    ansible-playbook \
+                      -i ansible/inventory \
+                      ansible/playbook.yml
+                '''
+            }
+        }
     }
 
     post {
