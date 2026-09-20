@@ -1,0 +1,39 @@
+---
+- name: Configure DevOps Application Server
+  hosts: local
+  become: true
+
+  tasks:
+
+    - name: Install Nginx
+      apt:
+        name: nginx
+        state: present
+        update_cache: true
+
+    - name: Create application user
+      user:
+        name: appuser
+        state: present
+        shell: /bin/bash
+
+    - name: Ensure Nginx is running
+      service:
+        name: nginx
+        state: started
+        enabled: true
+
+    - name: Create application configuration file
+      copy:
+        dest: /etc/nginx/conf.d/devops-demo.conf
+        content: |
+          server {
+              listen 8090;
+              server_name localhost;
+
+              location / {
+                  return 200 'DevOps application configured by Ansible';
+                  add_header Content-Type text/plain;
+              }
+          }
+        mode: '0644'
